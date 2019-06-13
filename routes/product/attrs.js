@@ -14,13 +14,13 @@ const auth = require("../../middleware/auth");
 
 
 //Post
-router.post('/', [auth, staff], addAttrs) 
+router.post('/',  addAttrs) //[auth, staff],
 
 //Get All Attributes
-router.get('/',[auth, staff], getAllAttrs)
+router.get('/', getAllAttrs) //[auth, staff]
 
 //Get Attribute by Id
-router.get('/:id',[auth, staff], getAttrById)
+router.get('/:id', getAttrById) //[auth, staff],
 
 //Put
 router.put('/:id',[auth, staff], updateAttrs);

@@ -19,6 +19,8 @@ const attributeSchema = mongoose.Schema({
     },
     // index: true,
     // unique: true 
+},{
+    timestamps: true 
 });
 
 attributeSchema.index({name: 1, value: 1},{unique: true})

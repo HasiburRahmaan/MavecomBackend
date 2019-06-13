@@ -2,7 +2,7 @@ routes/product/comment.js  - line 11, 15
 routes/product/brand.js - line 11, 14, 19 
 routes/product/department.js 
 
-model/product/comment.js - line 6, 124
+model/product/comment.js - line 6, 124 
 
 startup/db/  - line 6, 7
 
