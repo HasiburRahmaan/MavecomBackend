@@ -1,0 +1,31 @@
+
+# customer by Id
+    url pattern: customers/customerId/customerId
+
+# customer by username
+    url pattern: customers/username/customerUsername
+
+# customers by name
+    url pattern: customers/name/customerName
+
+# customers by city
+    url pattern: customers/address/city?city=''
+
+# customers by state
+    url pattern: customers/address/state?state=''
+
+# customer by city and state
+    url pattern: customers/address?city=''&state=''
+
+***** NB address query can me better by sending query directly from the client
+        then we don't have to make so many routs
+
+# get customer's wishlist
+    url pattern: customers/wish-list/username/customerUsename
+
+# get products by customer recent search list
+    url pattern: customers/search-list/username/customerUsername
+    NB: max limit = 20.
+
+# get customer recommended products
+    url pattern: customers/recomended/username/customerUsename

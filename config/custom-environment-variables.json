@@ -1,0 +1,4 @@
+{
+  "jwtPrivateKey": "mavEcomJwtPrivateKey",
+  "NODE_ENV": "NODE_ENV"
+}

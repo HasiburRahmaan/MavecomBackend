@@ -1,0 +1,45 @@
+{
+  "name": "mavecom",
+  "version": "1.0.0",
+  "description": "e-commerce site backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "8.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/maveteam/mavecom.git"
+  },
+  "keywords": [
+    "e-commerce",
+    "maveteam",
+    "mave"
+  ],
+  "author": "nafiul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/maveteam/mavecom/issues"
+  },
+  "homepage": "https://gitlab.com/maveteam/mavecom#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.5",
+    "compression": "^1.7.4",
+    "config": "^3.1.0",
+    "express": "^4.16.4",
+    "express-async-errors": "^3.1.1",
+    "helmet": "^3.16.0",
+    "joi": "^14.3.1",
+    "joi-objectid": "^2.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.5.0",
+    "multer": "^1.4.1",
+    "validator": "^10.11.0",
+    "winston": "^2.4.4",
+    "winston-mongodb": "^3.0.2"
+  }
+}

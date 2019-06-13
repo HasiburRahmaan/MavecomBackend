@@ -1,0 +1,60 @@
+API list for products will be needed for home page.
+
+# product by Id:
+    url pattern: products/productId/productId
+
+# products by department
+   
+    url pattern: products/department/department-name
+
+# products by departments and catagory and subcatagory..
+    url pattern: products/department/department-name?catagory=men&sub-catagory=t-shirt/half
+    NB : product by subcatagory implementation will be easy after we have some product in database.
+
+
+# products by top discounts
+    url patterns: products/top-discounts
+
+# products by top discounts and customer recomended
+    url patterns: products/tot-discounts/username=customerUsername
+
+# products by brand
+    url pattern: products/brand
+
+# products by brand and department
+    url pattern: products/brand/department/departmentName
+
+# products by brand and department and catagories
+    url patterns : wll be decided
+
+# products by fast shipping
+    url pattern: products/fast-shipping/user-name=customerUsername
+    NB: fast shipping products will be decided by choosing the sellers whos are located near to the customer.
+
+# products by fast shipping and recomendation
+    url pattern: products/fast-shipping/recommended/username:customerUsername
+
+
+# products by name 
+    url pattern : products/name/productName
+    NB : url can contain speling mistake
+        url can contain a part or product name
+
+# products by attributes
+    url pattern: products/attrs/attributeValue
+
+# products by name and attributes
+    url pattern : will be decided
+    NB : this is for normal searching style like "white full t-shirt"
+        may be search in department, catagory, attributes....
+
+
+# products by catagory and price
+
+# products by catagory attributes and price
+
+# products by seller
+
+# prodcuts by seller and department, catagory, subcatagory
+
+# get hot products

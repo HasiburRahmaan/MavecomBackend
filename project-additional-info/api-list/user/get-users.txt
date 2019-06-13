@@ -1,0 +1,20 @@
+# get users
+    url pattern: /users
+
+# get user by Id
+    url pattern: /users/id/userId
+
+# get users by username
+    url pattern: /users/username/username
+
+# get user by phone
+    url pattern: /users/phone/phone
+
+# get users by email
+    url pattern: /users/email/userEmail
+
+# get users by admin
+    url pattern: /users/admin
+
+# get users by address
+    url pattern: /users/address?state=""  //note: address can be state or country or whatever...

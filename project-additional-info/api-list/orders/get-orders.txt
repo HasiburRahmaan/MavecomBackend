@@ -1,0 +1,23 @@
+# get all orders
+    url pattern: /orders
+
+# get order by Id
+    url pattern: /orders/id/orderId
+
+# get orders by customerId
+    url pattern: /orders/customerId/customerId
+
+# get orders by productId
+    url pattern: /orders/productId/productId
+
+# get orders by date
+    url pattern: /orders/date/date
+
+# get orders by date range
+    url pattern: /orders/date?from=date&to=date
+
+# get orders by address
+    url pattern: /orders/address  // note: address can be state,country, road etc.
+
+# get orders by sellers
+    url pattern: /orders/seller/sellerId
