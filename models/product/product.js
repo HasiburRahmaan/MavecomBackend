@@ -15,7 +15,7 @@ const thumbnail_imageschema = mongoose.Schema({
   },
   title: {
     type: String,
-    minlength: 4,
+    minlength: 2,
     maxlength: 100
   },
   src: {
@@ -137,7 +137,7 @@ function validateProduct(product) {
             .max(100)
             .required(),
           title: Joi.string()
-            .min(4)
+            .min(2)
             .max(100)
             .required(),
           src: Joi.string()

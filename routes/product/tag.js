@@ -11,14 +11,14 @@ const auth = require("../../middleware/auth");
 router.post('/', addTag)
 
 //Get
-router.get('/',[auth, staff], getAllTag);
+router.get('/', getAllTag);//[auth, staff],
 
 router.get('/:id', getTagById);
 
 //Put
-router.put('/:id',[auth, staff], updateTag );
+router.put('/:id', updateTag );//[auth, staff],
 
 //Delete
-router.delete('/:id',[auth, staff], deleteTag); 
+router.delete('/:id', deleteTag); //[auth, staff],
 
 module.exports = router; 

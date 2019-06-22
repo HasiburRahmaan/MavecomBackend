@@ -66,7 +66,7 @@ exports.getProductByDeptName = async(req, res)=>{
         var dept = await Department.find({name:req.params.deptname});  
         try {
             var products = await Product.find({department: dept[0].id}); 
-            console.log(dept)  
+            // console.log(dept)  
             return res.send(products);
         } catch (error) {
             return res.send(error); 

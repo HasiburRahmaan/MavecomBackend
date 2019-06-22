@@ -10,13 +10,22 @@ const {Customer} = require("../../models/customer/customer")
 async function updateKeywordList(user, keyword){
 
     var keywordInSearchKeywordList = false;
-    user.keywordList.map( word =>{ 
-        if(word.keyword == keyword){
-           
-            keywordInSearchKeywordList = true;  
-            word.searched+=1; 
-        }
-    }) 
+    // user.keywordList.map( word =>{ 
+        // if(word.keyword == keyword){
+        //     keywordInSearchKeywordList = true;  
+        //     word.searched+=1; 
+        // }
+    // }) 
+
+    var length = user.keywordList.length   
+    for(var i = 0; i< length; i++){    
+        if(user.keywordList[i].keyword == keyword){
+            keywordInSearchKeywordList = true;    
+            user.keywordList[i].searched+=1;  
+            break; 
+        } 
+        
+    } 
 
     if(keywordInSearchKeywordList){
         user.save()
@@ -43,6 +52,7 @@ exports.addCustomerSearchKeywords = async (req,res)=>{
     
     var user = await findKeywordListByUserId(req.body.customerId)
     if( user ){   
+        // console.log("if"); 
         res.status(200).send(await updateKeywordList(user, req.body.keywordList[0].keyword) )  
        
     } else {

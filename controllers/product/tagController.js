@@ -17,9 +17,17 @@ exports.addTag = async(req, res) =>{
     if(error){
         res.status(400).send(error.details.map(e=>e.message));      
     }
-    var tag = new Tag(req.body);
-    await tag.save();
-    res.status(200).send(tag);    
+    var body = req.body;
+    body.value = body.value.toLowerCase()
+    
+    try {
+        var tag = new Tag(body);
+         await tag.save();
+         res.status(200).send(tag); 
+    } catch (error) {
+        res.send(error)
+    }
+
 } 
 
 //Get all Tag 

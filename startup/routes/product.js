@@ -12,6 +12,8 @@ const productVarient = require("../../routes/product/productVarient");
 const shipping = require("../../routes/product/shipping");
 const tag = require("../../routes/product/tag");
 const express = require("express");
+
+const search = require('../../search/route/tagProductListRoute');
 const app = express();
 
 module.exports = function(app) {
@@ -28,4 +30,6 @@ module.exports = function(app) {
   app.use("/api/product-varient", productVarient);
   app.use("/api/shipping", shipping);
   app.use("/api/tag", tag);
+
+  app.use("/api/search", search); 
 };
