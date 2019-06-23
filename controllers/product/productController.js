@@ -16,16 +16,16 @@ async function findById(id){
 //Add Product
 exports.addProduct = async(req, res) =>{ 
 
-    if (!req.file) {
-        const error = new Error('No image provided.');
-        error.statusCode = 422;
-        throw error;
-        res.status(400).send(error);
-    }
+    // if (!req.file) {
+    //     const error = new Error('No image provided.');
+    //     error.statusCode = 422;
+    //     throw error;
+    //     res.status(400).send(error);
+    // }
 
-    const imageUrl = req.file.path;
-    delete req.file;
-    req.body.assets.thumbnail_images.src = imageUrl;
+    // const imageUrl = req.file.path;
+    // delete req.file;
+    // req.body.assets.thumbnail_images.src = imageUrl;
    
     const {error} =  validateProduct(req.body);
     if(error){

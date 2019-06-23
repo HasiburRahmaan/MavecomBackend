@@ -5,6 +5,8 @@ routes/product/tag
 
 model/product/comment.js - line 6, 124 
 
+controller/product/productController.js - 19 - 28 
+
 startup/db/  - line 6, 7
 startup/route/product - 16, 34
 

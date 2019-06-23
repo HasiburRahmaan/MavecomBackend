@@ -11,9 +11,12 @@ function getProductListByTag(tagId){
     return productList ? productList : null  
 } 
 
-function getProductListByTagName(tag){
-    var productList =  ProductListByTag.find({tag})[0]
-    return productList ? productList : null  
+//Function for get product list by tag name 
+async function getProductListByTagName(tag){
+    if (tag.length)
+        tag = tag.toLowerCase()
+    var list =  await ProductListByTag.find({tag}).select('productList -_id') 
+    return list ? list[0] : null  
 }
 
 
@@ -26,12 +29,14 @@ function getProductListByTagName(tag){
         
         var tag = tagList[i]
         var productList = await getProductListByTag(tag.id)
-
+        // console.log(tag.value,"\n", productList) 
         //Updating Table
         var tableTag = await ProductListByTag.find({tag:tag.value})
+        // console.log(tableTag)
         if(tableTag.length){
             var value = tableTag[0]
-            value.productList[0] = productList
+            value.productList = productList 
+            // console.log(value) 
             value.save() 
         }else{
             var objectSchema = {
@@ -45,7 +50,23 @@ function getProductListByTagName(tag){
     }
 }  
 
+function intersectedProducts(productArray){
 
+   var res = new Set(productArray[0]);
+   var intersectedResult = productArray[0]
+   var len = productArray.length
+   for(var i = 0; i< len-1; i++){
+        var arr = productArray[i+1]
+        intersectedResult =  arr.filter(e=>{
+            // console.log( res.has(e) ) 
+            return res.has(e)
+        }) 
+        // console.log(intersection)
+        res = new Set(intersectedResult) 
+    }
+
+    return intersectedResult
+}
 
 
 exports.updateProductListByTagTable = (req, res)=>{
@@ -55,27 +76,26 @@ exports.updateProductListByTagTable = (req, res)=>{
 
 
 exports.searchQueries = async (req, res) =>{
-
-    // console.log(req.query.queries)
-
     var queries = req.query.queries.split(" ")
     var searchResults = [] 
 
     for(var i = 0; i<queries.length; i++){
-        searchResults[i] = await getProductListByTagName(queries[i])
+        var products = await getProductListByTagName(queries[i])  
+        var localArray = []
+        products.productList.map(e=>{
+            localArray.push(e.productId.toString())
+        }) 
+        searchResults.push(localArray) 
     }
-
-    console.log(searchResults[0])
-
-    res.send(searchResults); 
-}
-
-
+    // console.log(searchResults)  
+    var result = intersectedProducts(searchResults)
+    // console.log(result)
+    res.send(result);    
+} 
 
 
 
-
-
+// createProductListByTag()
 
 // function func(){
 //     let test = {
@@ -96,5 +116,20 @@ exports.searchQueries = async (req, res) =>{
 
 // createProductListByTag()  
 
+// =========================//
 
- 
+// console.log("test\n=====================", )
+
+// var arr1 = [1, 2, 3, "asdf", 3, 5]
+// // console.log(arr1) 
+// var arr2 = new Set([1, 3, 5, 7, "asdf" ]) 
+// var intersection = new Set(arr1.filter( e =>{
+//     return arr2.has(e)
+// }) ) 
+// // console.log(arr2 )
+// // console.log(intersection) 
+
+// console.log(arr2.has(3))
+
+
+
