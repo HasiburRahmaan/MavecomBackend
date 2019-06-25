@@ -1,10 +1,10 @@
 const {ProductListByTag, validateProductListByTag} = require('../model/tagProdcutList')
 const {ProductTag} = require('../../models/product/productTags')
 const {Tag} = require('../../models/product/tag') 
+const {distanceBetweenWords} = require('../error-correction/levenshteinAlgorithm')
 
 
-
-//Function for getting productlist against a single tag
+//Function for getting productlist against a single tag id
 function getProductListByTag(tagId){
     var tag = tagId  
     var productList =  ProductTag.find({tagId:tag}).select('productId -_id')
@@ -13,14 +13,17 @@ function getProductListByTag(tagId){
 
 //Function for get product list by tag name 
 async function getProductListByTagName(tag){
-    if (tag.length)
+    list = null 
+    if (tag!=null){
         tag = tag.toLowerCase()
-    var list =  await ProductListByTag.find({tag}).select('productList -_id') 
-    return list ? list[0] : null  
+        list =  await ProductListByTag.find({tag}).select('productList -_id') 
+    }
+    // console.log(tag, list.length) 
+    return list.length? list[0] : null  
 }
 
 
-
+//Function for updating ProductListByTag
  async function createProductListByTag(){
      //get every existing tag 
     var tagList = await Tag.find()
@@ -28,15 +31,13 @@ async function getProductListByTagName(tag){
     for(var i=0; i<tagList.length; i++){
         
         var tag = tagList[i]
-        var productList = await getProductListByTag(tag.id)
-        // console.log(tag.value,"\n", productList) 
+        var productList = await getProductListByTag(tag.id) 
+ 
         //Updating Table
         var tableTag = await ProductListByTag.find({tag:tag.value})
-        // console.log(tableTag)
         if(tableTag.length){
             var value = tableTag[0]
             value.productList = productList 
-            // console.log(value) 
             value.save() 
         }else{
             var objectSchema = {
@@ -50,48 +51,95 @@ async function getProductListByTagName(tag){
     }
 }  
 
+//Function for intersecting arrays 
 function intersectedProducts(productArray){
-
-   var res = new Set(productArray[0]);
-   var intersectedResult = productArray[0]
-   var len = productArray.length
-   for(var i = 0; i< len-1; i++){
-        var arr = productArray[i+1]
-        intersectedResult =  arr.filter(e=>{
-            // console.log( res.has(e) ) 
-            return res.has(e)
-        }) 
-        // console.log(intersection)
-        res = new Set(intersectedResult) 
+    var intersectedResult = null
+    if(productArray.length){
+        var res = new Set(productArray[0]);
+        intersectedResult = productArray[0]
+        var len = productArray.length
+        for(var i = 0; i< len-1; i++){
+            var arr = productArray[i+1]
+            intersectedResult =  arr.filter(e=>{
+                // console.log( res.has(e) ) 
+                return res.has(e)
+            }) 
+            // console.log(intersection)
+            res = new Set(intersectedResult) 
+        }
     }
 
     return intersectedResult
 }
 
 
+ async function getTagListByWrongKeyword(keyword){
+    var tagList = await Tag.find() 
+    var suggestedTagList = [] 
+    tagList.map(e=>{
+        if(distanceBetweenWords(keyword, e.value.trim())<2){
+            suggestedTagList.push(e.value) 
+        }
+    }) 
+
+    return suggestedTagList
+}
+
+
 exports.updateProductListByTagTable = (req, res)=>{
-    createProductListByTag()
-    res.status(200).send("updated")
+    try {
+        createProductListByTag()
+        res.status(200).send("updated")
+    } catch (error) {
+        res.send(error)
+    }
 }
 
 
 exports.searchQueries = async (req, res) =>{
     var queries = req.query.queries.split(" ")
     var searchResults = [] 
-
-    for(var i = 0; i<queries.length; i++){
-        var products = await getProductListByTagName(queries[i])  
-        var localArray = []
-        products.productList.map(e=>{
-            localArray.push(e.productId.toString())
-        }) 
-        searchResults.push(localArray) 
-    }
-    // console.log(searchResults)  
-    var result = intersectedProducts(searchResults)
-    // console.log(result)
-    res.send(result);    
+    var intersectedSearchResults = []
+    var emptyKeywords = [] 
+    
+    for(var i = 0; i<queries.length; i++){ 
+        try {
+            var tag = queries[i].trim().toLowerCase()
+            var products = await getProductListByTagName(tag)  
+            var localArray = []
+            if(products){
+                products.productList.map(e=>{
+                    localArray.push(e.productId.toString()) 
+                }) 
+                searchResults.push(localArray) 
+            }else{ 
+                var tagList = await getTagListByWrongKeyword(tag) 
+                for(var j = 0; j<tagList.length; j++){
+                    products = await getProductListByTagName(tagList[j])  
+                    if(products){
+                        products.productList.map(e=>{
+                            localArray.push(e.productId.toString()) 
+                        }) 
+                        searchResults.push(localArray) 
+                    }else{
+                        emptyKeywords.push(tag) 
+                    }
+                    // console.log(tag , tagList)
+                }
+            }
+            if(searchResults){
+                intersectedSearchResults = intersectedProducts(searchResults)
+            }
+       
+        } catch (error) {
+            res.send(error) 
+        }
+    } 
+    console.log("Product list not found for keywords: ",emptyKeywords) 
+    return intersectedSearchResults? res.send(intersectedSearchResults) : res.status(204).send(null) 
+     
 } 
+
 
 
 
@@ -132,4 +180,13 @@ exports.searchQueries = async (req, res) =>{
 // console.log(arr2.has(3))
 
 
+// console.log(typeof(getProductListByTag("black")))
 
+// getProductListByTagName("grey").then(e=>console.log(e))
+
+// console.log(DistanceBetweenWords("black", "back"))
+
+
+// getTagListByWrongKeyword("toy").then(e=>{
+//     console.log(e)
+// })
