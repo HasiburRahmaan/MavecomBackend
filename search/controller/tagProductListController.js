@@ -126,7 +126,7 @@ exports.searchQueries = async (req, res) =>{
                     }
                     // console.log(tag , tagList)
                 }
-            }
+            }      
             if(searchResults){
                 intersectedSearchResults = intersectedProducts(searchResults)
             }
