@@ -19,9 +19,9 @@ router.post('/', addCustomer);
 
 router.get('/',  getAllCustomers); //[auth, staff],
 
-router.get('/customer-id/:customerId',[auth, staff],  getCustomerById); 
+router.get('/customer-id/:customerId',  getCustomerById); //,[auth, staff]
 
-router.delete('/delete-customer/:customerId', [auth, staff], deleteCustomer);
+router.delete('/delete-customer/:customerId',  deleteCustomer); //[auth, staff],
 
 router.put('/update-customer/:customerId', [auth], updateCustomer);
 

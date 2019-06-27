@@ -73,12 +73,12 @@ function intersectedProducts(productArray){
 }
 
 
- async function getTagListByWrongKeyword(keyword){
+ async function getTagListForWrongKeyword(keyword){
     var tagList = await Tag.find() 
     var suggestedTagList = [] 
     tagList.map(e=>{
         if(distanceBetweenWords(keyword, e.value.trim())<2){
-            suggestedTagList.push(e.value) 
+            suggestedTagList.push(e.value.trim()) 
         }
     }) 
 
@@ -96,11 +96,12 @@ exports.updateProductListByTagTable = (req, res)=>{
 }
 
 
-exports.searchQueries = async (req, res) =>{
+exports.searchQueries = async (req, res) =>{  
     var queries = req.query.queries.split(" ")
     var searchResults = [] 
     var intersectedSearchResults = []
-    var emptyKeywords = [] 
+    var emptyKeywords = []
+    var wrongKeywords = [] 
     
     for(var i = 0; i<queries.length; i++){ 
         try {
@@ -113,29 +114,39 @@ exports.searchQueries = async (req, res) =>{
                 }) 
                 searchResults.push(localArray) 
             }else{ 
-                var tagList = await getTagListByWrongKeyword(tag) 
-                for(var j = 0; j<tagList.length; j++){
-                    products = await getProductListByTagName(tagList[j])  
-                    if(products){
-                        products.productList.map(e=>{
-                            localArray.push(e.productId.toString()) 
-                        }) 
-                        searchResults.push(localArray) 
-                    }else{
-                        emptyKeywords.push(tag) 
+                // console.log(tag)
+                var tagList = await getTagListForWrongKeyword(tag) 
+                // console.log(tag,"=>", tagList)
+                if(tagList.length){
+                    for(var j = 0; j<tagList.length; j++){
+                        products = await getProductListByTagName(tagList[j]) 
+                        if(products.productList.length){
+                            products.productList.map(e=>{
+                                localArray.push(e.productId.toString()) 
+                            }) 
+                            searchResults.push(localArray) 
+                        }else{
+                            emptyKeywords.push(tagList[j])  
+                        }
+                        // console.log(tag , tagList)
                     }
-                    // console.log(tag , tagList)
+                }else{
+                    wrongKeywords.push(tag) 
                 }
             }      
-            if(searchResults){
-                intersectedSearchResults = intersectedProducts(searchResults)
-            }
-       
+            
+        
         } catch (error) {
             res.send(error) 
         }
+        
     } 
+    if(searchResults){
+        intersectedSearchResults = intersectedProducts(searchResults) 
+    }
+    
     console.log("Product list not found for keywords: ",emptyKeywords) 
+    console.log("wrong keywords ", wrongKeywords) 
     return intersectedSearchResults? res.send(intersectedSearchResults) : res.status(204).send(null) 
      
 } 

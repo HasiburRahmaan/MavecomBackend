@@ -61,7 +61,7 @@ exports.updateBrand = async(req, res)=>{
             await brand.save();
             return res.send(brand); 
         }else{
-            return res.status(404).send("Brand not found with this id") 
+            return res.status(404).send("Brand not found") 
         } 
     } catch (error) {
         return res.status(404).send(error);
@@ -78,7 +78,7 @@ exports.deleteBrand = async (req, res)=>{
             brand.delete();
             return res.send(brand); 
         }else{
-            return res.status(404).send("Brand not found with this id") 
+            return res.status(404).send("Brand not found") 
         } 
     } catch (error) {
         return res.status(404).send(error);

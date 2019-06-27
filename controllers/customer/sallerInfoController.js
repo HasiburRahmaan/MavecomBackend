@@ -20,6 +20,18 @@ exports.getAllSallerInfo = async (req,res)=>{
     return res.status(200).send(sallerInfo);
 }
 
+exports.getSallerInfoById = async(req, res)=>{
+
+    var id = req.params.customerId
+    var sallerInfo = await SallerInfo.findById(id).populate("customerId")
+    if(sallerInfo){
+        res.status(200).send(sallerInfo)
+    }else{
+        res.status(404).send("Seller not found") 
+    }
+
+}
+
 exports.deleteSallerInfo = async (req,res)=>{
 
     const sallerInfo = await SallerInfo.findById(req.params.customerId);

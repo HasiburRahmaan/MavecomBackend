@@ -32,7 +32,7 @@ exports.addCustomer = async (req, res) => {
   user.password = await bcrypt.hash(user.password, salt);
   user = await user.save();
   
-  const token = user.generateAuthToken();
+  // const token = user.generateAuthToken();
   
   let customer = new Customer(req.body);
   customer.userInfo._id = user._id;
@@ -42,7 +42,7 @@ exports.addCustomer = async (req, res) => {
   customer = await customer.save();
   
   return res
-    .header("x-auth-token", token)
+    // .header("x-auth-token", token)
     .status(200)
     .send(customer);
 };
