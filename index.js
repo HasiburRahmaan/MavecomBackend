@@ -10,4 +10,4 @@ require("./startup/db")();
 // require("./startup/prod")(app);
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Listening on post ${port}...`));
+app.listen(port, () => console.log(`Listening on post ${port}...`)); 

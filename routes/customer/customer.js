@@ -23,7 +23,7 @@ router.get('/customer-id/:customerId',  getCustomerById); //,[auth, staff]
 
 router.delete('/delete-customer/:customerId',  deleteCustomer); //[auth, staff],
 
-router.put('/update-customer/:customerId', [auth], updateCustomer);
+router.put('/update-customer/:customerId',  updateCustomer); //[auth],
 
 router.get('/username/:username', [auth, staff], getCustomersByUserName);
 

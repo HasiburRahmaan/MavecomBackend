@@ -71,12 +71,12 @@ exports.updateCustomer = async (req, res) => {
   if(req.user._id != req.body.userInfo._id || req.user._id !=req.params.customerId)
     return res.status(404).send("Acccess denied");
 
-  // req.body.userInfo.updatedAt = new Date();
+  req.body.userInfo.updatedAt = new Date();
   const customerId = req.body.userInfo._id;
   delete req.body.userInfo._id;
   await User.findByIdAndUpdate(customerId,{$set:req.body.userInfo});
 
-  // req.body.updatedAt = new Date();
+  req.body.updatedAt = new Date();
   const result = await Customer.findByIdAndUpdate(req.params.customerId, {
     $set: req.body
   });

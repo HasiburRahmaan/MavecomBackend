@@ -18,7 +18,6 @@ const customerSchema = mongoose.Schema({
   profilePicture: {
     type: String,
     minlength: 1,
-    required: true
   }
 });
 
@@ -129,7 +128,6 @@ var customerSchemaValidator = Joi.object().keys({
     .required(),
   profilePicture: Joi.string()
     .min(1)
-    .required()
 });
 
 var commentSchemaValidator = Joi.object().keys({

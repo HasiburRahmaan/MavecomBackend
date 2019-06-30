@@ -1,5 +1,5 @@
 const {ProductComment, validateProductComment, validateSingleComment} = require("../../models/product/comment");
-
+const {Customer } = require("../../models/customer/customer")
 
 //Function
 async function findById(id){
@@ -24,17 +24,74 @@ function addCommentOnExistingProduct(productComment, comment){
     }
 }
 
-//Delete a single comment from a products
-// function deleteSingleCommentFromProduct(productComment, commentId){
-//     // console.log(productComment.comments.length)
-//     var updateProductComment = productComment
-//     // updateProductComment.comments = productComment.comments.filter(e=>{
-//     //      return e._id.toString() != commentId 
-//     //     // console.log(e._id, commentId)
-//     //  })  
-//      console.log(updateProductComment)
+// Delete a single comment from a products
+function deleteSingleCommentFromProduct(productComment, commentId){
+    productComment.comments = productComment.comments.filter(e=>{
+        return e.id != commentId
+    })
+    productComment.total_comments = productComment.comments.length
+    return productComment
+}
 
-// }
+//check customer already reacted the comment or not
+function customerOnReactionList(comment, customerId){
+    var customerStatus = null
+    var commentValue = comment.comment 
+    
+    var likedLen = commentValue.likedBy.length 
+    var dislikedLen = commentValue.dislikedBy.length
+
+    for(var i = 0; i<likedLen; i++){ 
+        if(commentValue.likedBy[i].id == customerId){
+            customerStatus = 1 
+            break 
+        }
+    } 
+    for(var i = 0; i<dislikedLen; i++){
+        if(commentValue.dislikedBy[i].id == customerId){
+            customerStatus = 2
+            break 
+        }
+    } 
+    return customerStatus
+}
+
+
+//update reaction list of a comment 
+async function updateReactionListOfaComment(comment, customerId, reactionStatus){
+    var customer = await Customer.findById(customerId) 
+    var commentValue = comment.comment
+    var customerStatus = customerOnReactionList(comment, customerId) 
+    
+    if(customerStatus==1){
+        commentValue.likedBy = commentValue.likedBy.filter(e=>{
+            return e.id != customerId
+        })
+    }else if(customerStatus == 2){
+        commentValue.dislikedBy = commentValue.dislikedBy.filter(e=>{
+            return e.id != customerId
+        })
+    }
+    else if(customerStatus == null){
+        var customerSchema = {}; 
+        customerSchema._id = customerId 
+        customerSchema.name = customer.fullName
+        customerSchema.profilePicture = customer.assets.images[0] 
+    
+        if(reactionStatus==1){
+            commentValue.likedBy.push(customerSchema) 
+        } else if(reactionStatus == 2){
+            commentValue.dislikedBy.push(customerSchema)
+            
+        }    
+    }
+
+    commentValue.liked = commentValue.likedBy.length
+    commentValue.disLiked = commentValue.dislikedBy.length
+    comment.comment = commentValue
+    return comment
+}
+
 
 //Add
 exports.addProductComment = async(req, res) =>{  
@@ -76,12 +133,10 @@ exports.getAllProductComment = async(req, res)=>{
 
 
 //Get ProductComment By Id
-
 exports.getProductCommentById = async(req, res)=>{
     var id = req.params.id;
     try {
         var comment =await findById(id) 
-        // deleteSingleCommentFromProduct(comment, "5d174e7248f5047a2c9a960c")
         return res.send(comment); 
     } catch (error) {
         return res.status(404).send(error);
@@ -107,7 +162,37 @@ exports.updateProductComment = async(req, res)=>{
     } catch (error) {
         return res.status(404).send(error);
     } 
+    
 } 
+
+//Update reaction list of a product
+exports.updateReactionListOfaComment = async (req, res)=>{    
+    var commentId =  req.query.comment_id
+    var customerId = req.query.customer_id 
+    var reactionStatus = req.query.react 
+
+    try {
+        var productComment = await findById(req.query.productcomment_id) 
+        var commentIndex = 0
+        var len = productComment.comments.length
+        var comment = productComment.comments.filter(e=>{
+            return e.id == commentId 
+        }) 
+        // for(commentIndex=0; commentIndex<len; commentIndex++){
+        //     if(productComment.comments[commentIndex].id == commentId){ 
+        //         comment = productComment.comments[commentIndex]
+        //         break
+        //     }
+        // }
+        comment = await updateReactionListOfaComment(comment[0], customerId, reactionStatus) 
+        // productComment.comments[commentIndex] =  comment  
+        await productComment.save()
+        res.status(200).send(productComment) 
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+}
 
 //Update a single Comment 
 // exports.updateSingleComment = async(req, res)=>{

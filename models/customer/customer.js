@@ -104,6 +104,12 @@ var customerSchema = new mongoose.Schema({
     },
     active:{
         type:Boolean
+    },
+    createdAt:{
+        type: Date 
+    },
+    updatedAt:{
+        type: Date
     }
 
 }, {
@@ -138,6 +144,8 @@ function validateCustomer(customer){
         }),
         isSeller: Joi.boolean(),
         active: Joi.boolean(),
+        createdAt: Joi.Date(),
+        updatedAt: Joi.Date()
     }
     return Joi.validate(customer,schema,{abortEarly: false});
 }

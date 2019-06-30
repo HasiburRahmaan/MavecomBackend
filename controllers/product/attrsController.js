@@ -45,8 +45,8 @@ exports.getAttrById = async(req, res)=>{
         return attribute ? res.send(attribute) : res.send("Atrribute not found")  
         
     } catch (error) {
-        return res.status(404).send(error);
-    } 
+        return res.status(404).send(error); 
+    }  
 }
 
 //Update Attribute
