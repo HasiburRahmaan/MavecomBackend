@@ -22,7 +22,6 @@ notes
 
 *should a customer have multiple body details? 
 
-*tag should have an active field 
 
 
 

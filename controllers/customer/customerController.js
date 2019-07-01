@@ -48,9 +48,14 @@ exports.addCustomer = async (req, res) => {
 };
 
 exports.getAllCustomers = async (req, res) => {
-  const customers = await Customer.find();
-  return res.status(200).send(customers);
-};
+  try {
+    const customers = await Customer.find();
+    return res.status(200).send(customers);
+  } catch (error) {
+    console.log(error)
+    res.status(404).send(error)
+  }
+}; 
 
 exports.deleteCustomer = async (req, res) => {
 
@@ -67,16 +72,26 @@ exports.updateCustomer = async (req, res) => {
   const { error } = validateCustomerforUpdate(req.body);
   if(error)
     return res.status(400).send(error.details.map(e => e.message))
+  
 
   if(req.user._id != req.body.userInfo._id || req.user._id !=req.params.customerId)
     return res.status(404).send("Acccess denied");
 
+  var password = req.body.userInfo.password
+  if( password != null || password != undefined){
+    const salt = await bcrypt.genSalt(10);
+    password = await bcrypt.hash(password, salt);  
+    req.body.userInfo.password = password
+  } 
+
   req.body.userInfo.updatedAt = new Date();
+  
   const customerId = req.body.userInfo._id;
   delete req.body.userInfo._id;
   await User.findByIdAndUpdate(customerId,{$set:req.body.userInfo});
 
   req.body.updatedAt = new Date();
+  
   const result = await Customer.findByIdAndUpdate(req.params.customerId, {
     $set: req.body
   });

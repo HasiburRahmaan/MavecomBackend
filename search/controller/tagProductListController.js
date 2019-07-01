@@ -1,15 +1,7 @@
-const {ProductListByTag, validateProductListByTag} = require('../model/tagProdcutList')
+const {ProductListByTag, validateProductListByTag} = require('../indexing/model/IndexingByTag')
 const {ProductTag} = require('../../models/product/productTags')
 const {Tag} = require('../../models/product/tag') 
 const {distanceBetweenWords} = require('../error-correction/levenshteinAlgorithm')
-
-
-//Function for getting productlist against a single tag id
-function getProductListByTag(tagId){
-    var tag = tagId  
-    var productList =  ProductTag.find({tagId:tag}).select('productId -_id')
-    return productList ? productList : null  
-} 
 
 //Function for get product list by tag name 
 async function getProductListByTagName(tag){
@@ -22,34 +14,6 @@ async function getProductListByTagName(tag){
     return list.length? list[0] : null  
 }
 
-
-//Function for updating ProductListByTag
- async function createProductListByTag(){
-     //get every existing tag 
-    var tagList = await Tag.find()
-    
-    for(var i=0; i<tagList.length; i++){
-        
-        var tag = tagList[i]
-        var productList = await getProductListByTag(tag.id) 
- 
-        //Updating Table
-        var tableTag = await ProductListByTag.find({tag:tag.value})
-        if(tableTag.length){
-            var value = tableTag[0]
-            value.productList = productList 
-            value.save() 
-        }else{
-            var objectSchema = {
-                tag: tag.value,
-                productList
-            } 
-            var object = ProductListByTag(objectSchema)
-            await object.save()
-        }
-        
-    }
-}  
 
 //Function for intersecting arrays 
 function intersectedProducts(productArray){
@@ -83,16 +47,6 @@ function intersectedProducts(productArray){
     }) 
 
     return suggestedTagList
-}
-
-
-exports.updateProductListByTagTable = (req, res)=>{
-    try {
-        createProductListByTag()
-        res.status(200).send("updated")
-    } catch (error) {
-        res.send(error)
-    }
 }
 
 

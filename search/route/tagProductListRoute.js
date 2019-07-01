@@ -3,9 +3,9 @@
 
 const { 
     updateProductListByTagTable,
-    searchQueries,
+} = require('../indexing/controller/IndexingByTagController')
 
-} = require('../controller/tagProductListController')
+const {searchQueries} = require('../controller/tagProductListController')
 
 router.get('/update-table', updateProductListByTagTable) 
 
