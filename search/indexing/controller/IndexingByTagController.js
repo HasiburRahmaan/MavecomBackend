@@ -2,7 +2,7 @@ const {ProductListByTag, validateProductListByTag} = require('../model/IndexingB
 const {ProductTag} = require('../../../models/product/productTags')
 const {Tag} = require('../../../models/product/tag') 
 
-
+const { createProductListByProductName } = require('../controller/IndexingByProductNameController')
 
 //Function for getting productlist against a single tag id
 function getProductListByTagId(tagId){
@@ -52,9 +52,10 @@ async function getProductListByTagName(tag){
 }  
 
 
-exports.updateProductListByTagTable = (req, res)=>{
+exports.updateProductListByTagTable = async (req, res)=>{
     try {
-        createProductListByTag()
+        await createProductListByTag() 
+        await createProductListByProductName()
         res.status(200).send("updated")
     } catch (error) {
         res.send(error)

@@ -7,7 +7,7 @@ const {distanceBetweenWords} = require('../error-correction/levenshteinAlgorithm
 async function getProductListByTagName(tag){
     list = null 
     if (tag!=null){
-        tag = tag.toLowerCase()
+        tag = tag.toLowerCase().trim()
         list =  await ProductListByTag.find({tag}).select('productList -_id') 
     }
     // console.log(tag, list.length) 

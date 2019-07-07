@@ -18,7 +18,7 @@ exports.addTag = async(req, res) =>{
         res.status(400).send(error.details.map(e=>e.message));      
     }
     var body = req.body;
-    body.value = body.value.toLowerCase()
+    body.value = body.value.trim().toLowerCase()
     
     try {
         var tag = new Tag(body);

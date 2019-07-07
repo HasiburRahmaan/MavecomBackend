@@ -32,7 +32,7 @@ function validateProductListByTag(value){
         tag: Joi.string().min(2).required(),
         productList: Joi.array().items(
            Joi.object().keys({
-               product:Joi.ObjectId() 
+               productId:Joi.ObjectId()  
            })
         )
     } 

@@ -23,7 +23,9 @@ exports.getAllDeliveryAddress = async (req,res)=>{
     const deliveryAddress = await DeliveryAddress.find();
     return res.status(200).send(deliveryAddress);
 
-}
+} 
+
+
 
 exports.deleteDeliveryAddress = async (req,res)=>{
 
