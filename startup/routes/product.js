@@ -14,6 +14,7 @@ const tag = require("../../routes/product/tag");
 const express = require("express");
 
 const search = require('../../search/route/tagProductListRoute');
+const similarProduct = require('../../recommendation-system/routes/recomendationRoutes')
 const app = express();
 
 module.exports = function(app) {
@@ -32,4 +33,5 @@ module.exports = function(app) {
   app.use("/api/tag", tag);
 
   app.use("/api/search", search); 
+  app.use("/api/similar-product", similarProduct)
 };
