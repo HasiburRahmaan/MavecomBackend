@@ -1,0 +1,38 @@
+routes/product/comment.js  - line 11, 15 
+routes/product/brand.js - line 11, 14, 19 
+routes/product/department.js 
+routes/product/tag 
+
+model/product/comment.js - line 6, 124 
+
+controller/product/productController.js - 19 - 28 
+
+startup/db/  - line 6, 7
+startup/route/product - 16, 34
+
+
+------
+notes
+------
+*hot product should have a field, name reason/cause 
+
+*productAttrs should have an array of attrId 
+
+*productController - addProducts  
+
+*should a customer have multiple body details? 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1080 @@
+{
+	"info": {
+		"_postman_id": "75e5dc78-79c0-4d1e-80e1-72d585b69df6",
+		"name": "mavecom",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "product",
+			"item": [
+				{
+					"name": "attribute",
+					"item": [
+						{
+							"name": "create attribute",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\": \"Attribute\",\n\t\"value\": \"value\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/attr",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"attr"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all attributes",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/attr/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"attr",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get  attribute by id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/attr/5d024b09ef30be5864c2ec23",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"attr",
+										"5d024b09ef30be5864c2ec23"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update attribute by id",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/attr/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"attr",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete attribute by id",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/attr/5cff604a5a454932599fe955",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"attr",
+										"5cff604a5a454932599fe955"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "brand",
+					"item": [
+						{
+							"name": "get all brands",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/brand/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"brand",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create brand",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"image\" : {\n        \"src\" : \"img-srcasdfasdfasdfasdfasdfsdfa\"\n    },\n    \"name\": \"Adiabbas\"\n}  "
+								},
+								"url": {
+									"raw": "{{url}}/api/brand/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"brand",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update brand",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"image\" : {\n        \"src\" : \"img-srcasdfasdfasdfasdfasdfsdfa\"\n    },\n    \"name\": \"Adidas\"\n}  "
+								},
+								"url": {
+									"raw": "{{url}}/api/brand/5cff572951163229438cd201",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"brand",
+										"5cff572951163229438cd201"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get brand by id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/brand/5cbc4ea0d0ddc30fd445c9a5",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"brand",
+										"5cbc4ea0d0ddc30fd445c9a5"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "comment",
+					"item": [
+						{
+							"name": "create-comment",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "   {\n   \t\"product\": {\n        \"id\": \"5cff730edbd4c6484f8f833f\",\n        \"VarientId\": \"varientId\"\n    },\n    \"total_comments\": 1,\n    \"comments\":[\n        {\n            \"active\": true,\n            \"customer\": {\n                \"_id\": \"5cbf0ddd6c9f4d14846e2f2d\",\n                \"name\": \"abul mukit\",\n        \t\t\"profilePicture\" : \"link\"\n            },\n            \"comment\": {\n                \"text\": \"comment\"\n          \n            }\n        }\n    ]\n}\n"
+								},
+								"url": {
+									"raw": "{{url}}/api/comment",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"comment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get-all-ProductComment",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/comment",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"comment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get product comment by id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/comment/5cff730edbd4c6484f8f833f",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"comment",
+										"5cff730edbd4c6484f8f833f"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "department",
+					"item": [
+						{
+							"name": "create-department",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\":\"Kid Zone\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/department",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"department"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get-all-department",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/department",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"department"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "product",
+					"item": [
+						{
+							"name": "create-product",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\":\"Iron Man Action Figure\",\n\t\"department\": \"5d07714cf365512ee302a530\",\n\t\"category\":\"toy\",\n\t\"total_stock\":10,\n\t\"priceRange\":[200, 300],\n\t\"brandName\":\"KidsZone\",\n\t\"assets\" : {\n\t\t\"thumbnail_images\":[\n\t\t\t{\n\t\t\t\t\"height\": 100,\n\t\t\t\t\"width\":100,\n\t\t\t\t\"title\":\"gun\",\n\t\t\t\t\"src\":\"https://images-na.ssl-images-amazon.com/images/I/613QrwgFp7L._SX425_.jpg\"\n\t\t\t}\t\n\t\t]\n\t\t\n\t}\n\t\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/product",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"product"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get-all-products",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/product",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"product"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get product by id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/product/productid/5cff730edbd4c6484f8f833f",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"product",
+										"productid",
+										"5cff730edbd4c6484f8f833f"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "product-tag",
+					"item": [
+						{
+							"name": "create product-tag",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"productId\":\"5d0f7ddd54f32a59db38ea6b\",\n\t\"tagId\":\"5d0798392efdd73f9943159f\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/product-tags",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"product-tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all product tag",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/product-tags",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"product-tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get product list by tag",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/product-tags/tag/q?tag=5d0798392efdd73f9943159f",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"product-tags",
+										"tag",
+										"q"
+									],
+									"query": [
+										{
+											"key": "tag",
+											"value": "5d0798392efdd73f9943159f"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get tag list by product",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/product-tags/product/q?product=5d0a0e02ead9fe12c6af4efe",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"product-tags",
+										"product",
+										"q"
+									],
+									"query": [
+										{
+											"key": "product",
+											"value": "5d0a0e02ead9fe12c6af4efe"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "tag",
+					"item": [
+						{
+							"name": "create tag",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"value\":\"Action Figure\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/tag",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"tag"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all tag",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/tag",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"tag"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "search",
+					"item": [
+						{
+							"name": "update search table",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/search/update-table",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"search",
+										"update-table"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search products",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/search/s?queries=blak+gre",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"search",
+										"s"
+									],
+									"query": [
+										{
+											"key": "queries",
+											"value": "blak+gre"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "customer",
+			"item": [
+				{
+					"name": "customer",
+					"item": [
+						{
+							"name": "create-customer",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"userInfo\":{\n\t\t\"username\":\"rafshnul\",\n\t\t\"password\":\"password\",\n\t\t\"email\":\"rafshnul@gmail.com\"\n\t},\n\t\"fullName\":\"Rafshnul Hq Siam\",\n\t\"lFullName\":\"Hq Siam\",\n\t\"total_buy\":10,\n\t\"religion\":\"Islam\",\n\t\"gender\":\"Male\",\n\t\"assets\":{\n\t\t\"phone\":\"01234567890\"\n\t},\n\t\"isSeller\":true,\n\t\"active\":true\n\t\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/customers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"customers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get-all-customer",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/customers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"customers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update-customer",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/customers/update-customer/5cbf0ddd6c9f4d14846e2f2d",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"customers",
+										"update-customer",
+										"5cbf0ddd6c9f4d14846e2f2d"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get-customer-by-Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/customers/customer-id/5d14ad8866a5c37ed71e6a52",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"customers",
+										"customer-id",
+										"5d14ad8866a5c37ed71e6a52"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete customer",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/customers/delete-customer/5d14abcec1436e7e1be39e31",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"customers",
+										"delete-customer",
+										"5d14abcec1436e7e1be39e31"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "body details",
+					"item": [
+						{
+							"name": "create body details",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"customerId\":\"5d013ff1b60cce25b8c85e5c\",\n\t\"height\":60,\n\t\"weight\": 65\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/body-details",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"body-details"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get body details by id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/body-details/5d0143e761b29113e4054184",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"body-details",
+										"5d0143e761b29113e4054184"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all body details",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/body-details",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"body-details"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "customer search keywords",
+					"item": [
+						{
+							"name": "get all customer with keywordlist",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/customer-search-keywords/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"customer-search-keywords",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create customer keywordlist",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"customerId\" : \"5d0218d2c2b39c7b39470347\",\n\t\"keywordList\":[ {\n\t\t\"keyword\":\"ATX motherboard\"\n\t}]\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/customer-search-keywords/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"customer-search-keywords",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get single customer search keyword list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/customer-search-keywords/5d0218d2c2b39c7b39470347",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"customer-search-keywords",
+										"5d0218d2c2b39c7b39470347"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "seller info",
+					"item": [
+						{
+							"name": "create seller info",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"customerId\":\"5d14ad8866a5c37ed71e6a52\",\n\t\"total_sale\":10,\n\t\"rank\":0\n}"
+								},
+								"url": {
+									"raw": "{{url}}/api/saller-info",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"saller-info"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all seller info",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/saller-info",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"saller-info"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get seller info by id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/api/saller-info/saller-id/5d14b165e76ecd02453e8155",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"saller-info",
+										"saller-id",
+										"5d14b165e76ecd02453e8155"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	]
+}
