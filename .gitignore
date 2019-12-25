@@ -3,8 +3,8 @@
 /images 
 
 
-/search/error-correction/jaro-winkler-distance.js
-/note.txt
-/recommendation-system
-/search
-/restClient
+# /search/error-correction/jaro-winkler-distance.js
+# /note.txt
+# /recommendation-system
+# /search
+# /restClient
