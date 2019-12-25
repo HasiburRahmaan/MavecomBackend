@@ -23,7 +23,7 @@ const orderShippingSchema=new mongoose.Schema({
     },
     address:{
         type:addressSchema,
-        required:"address is required"
+        // required:"address is required"
     }
 })
 const OrderShipping=mongoose.model("orderShipping",orderShippingSchema);
@@ -34,12 +34,12 @@ function ValidateOrderShipping(orderShipping){
         customer_name:Joi.string().min(3).max(200).required(),
         phone:Joi.number().required(),
         address:Joi.object().keys({
-               country:Joi.string().max(40).min(2).required(),
-                city:Joi.string().min(2).max(40).required(),
+               country:Joi.string().max(40).min(2),//.required(),
+                city:Joi.string().min(2).max(40),//.required(),
                 state:Joi.string().min(2).max(40),
-                street:Joi.string().min(1).max(40).required(),
-                house:Joi.string().min(1).max(40).required(),
-                floor:Joi.string().min(1).max(20).required()
+                street:Joi.string().min(1).max(40),//.required(),
+                house:Joi.string().min(1).max(40),//.required(),
+                floor:Joi.string().min(1).max(20),//.required()
         })
 
     };

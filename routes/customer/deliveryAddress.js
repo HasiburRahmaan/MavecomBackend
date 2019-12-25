@@ -1,16 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const {addDeliveryAddress,getAllDeliveryAddress,deleteDeliveryAddress,updateDeliveryAddress} = require("../../controllers/customer/deliveryAddressController")
-const {staff} = require("../../middleware/authorization")
-const {admin} = require("../../middleware/authorization")
+const { addDeliveryAddress, getAllDeliveryAddress, deleteDeliveryAddress, updateDeliveryAddress } = require("../../controllers/customer/deliveryAddressController")
+const { staff, selfOrStaff, admin } = require("../../middleware/authorization")
 const auth = require("../../middleware/auth")
 
-router.post("/",addDeliveryAddress );
+router.post("/post", addDeliveryAddress);
 
-router.get("/",[auth,staff],getAllDeliveryAddress);
+router.get("/", [auth], getAllDeliveryAddress);
 
-router.delete("/delete-delivery-address/:customerId",[auth,staff],deleteDeliveryAddress);
+router.delete("/delete/:customerId", [auth, staff], deleteDeliveryAddress);
 
-router.put("/update-delivery-address/:customerId",[auth,staff],updateDeliveryAddress);
+router.put("/update/:customerId", [auth, selfOrStaff], updateDeliveryAddress);
 
 module.exports = router;

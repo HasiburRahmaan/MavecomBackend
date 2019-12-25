@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const {
-    addAttrs,  
-    getAllAttrs, 
-    getAttrById, 
-    updateAttrs, 
+    addAttrs,
+    getAllAttrs,
+    getAttrById,
+    updateAttrs,
     deleteAttrs
 } = require("../../controllers/product/attrsController")
 
@@ -14,19 +14,19 @@ const auth = require("../../middleware/auth");
 
 
 //Post
-router.post('/',  addAttrs) //[auth, staff],
+router.post('/post', [auth, staff], addAttrs)
 
 //Get All Attributes
-router.get('/', getAllAttrs) //[auth, staff]
+router.get('/', [auth, staff], getAllAttrs)
 
 //Get Attribute by Id
-router.get('/:id', getAttrById) //[auth, staff],
+router.get('/:id', [auth, staff], getAttrById)
 
 //Put
-router.put('/:id',[auth, staff], updateAttrs);
+router.put('/update/:id', [auth, staff], updateAttrs);
 
 //Delete
-router.delete('/:id',[auth, staff], deleteAttrs)
+router.delete('/delete/:id', [auth, staff], deleteAttrs)
 
-module.exports = router; 
+module.exports = router;
 

@@ -13,12 +13,11 @@ const customerSchema = mongoose.Schema({
     minlength: 3,
     maxlength: 50,
     required: true,
-    trim: true 
+    trim: true
   },
   profilePicture: {
     type: String,
     minlength: 1,
-    required: true
   }
 });
 
@@ -65,7 +64,7 @@ const commentSchema = mongoose.Schema({
 const productSchema = mongoose.Schema({
   id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Product" 
+    ref: "Product"
   },
   VarientId: {
     type: String,
@@ -128,8 +127,6 @@ var customerSchemaValidator = Joi.object().keys({
     .max(50)
     .required(),
   profilePicture: Joi.string()
-    .min(1)
-    .required()
 });
 
 var commentSchemaValidator = Joi.object().keys({
@@ -138,7 +135,7 @@ var commentSchemaValidator = Joi.object().keys({
     .max(1000),
   images: Joi.array().items(Joi.string().min(1)),
   liked: Joi.number(),
-  disLiked: Joi.number(), 
+  disLiked: Joi.number(),
   likedBy: Joi.array().items(customerSchemaValidator),
   disLikedBy: Joi.array().items(customerSchemaValidator),
   createdAt: Joi.date(),
@@ -177,11 +174,15 @@ function validateProductComment(productComment) {
 function validateSingleComment(comment) {
   return Joi.validate(comment, commentValidator, { abortEarly: false });
 }
+function validateSingleReply(reply) {
+  return Joi.validate(reply, replySchemaValidator, { abortEarly: false })
+}
 
 module.exports = {
   ProductComment,
   validateProductComment,
-  validateSingleComment
+  validateSingleComment,
+  validateSingleReply
 };
 // Testing purpose
 // ==========================

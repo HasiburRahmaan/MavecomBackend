@@ -1,10 +1,14 @@
+const { BodyDetails } = require("../../models/customer/bodyDetails");
+
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
 const { User } = require("../../models/user/user");
 const Joi = require("joi");
 const {
   Customer,
-  validateCustomer
+  validateCustomer,
+  validateCustomerforUpdate,
+  validateCustomerforRegister
 } = require("../../models/customer/customer");
 const {
   DeliveryAddress,
@@ -13,48 +17,58 @@ const {
 ObjectId = require("mongodb").ObjectID;
 
 exports.addCustomer = async (req, res) => {
+  const { error } = validateCustomerforRegister(req.body);
+  if (error) return res.status(422).send(error.details.map(e => e.message));
+  try {
+    let user = await User.findOne({ username: req.body.username });
+    if (user) return res.status(409).send("Username already exists.");
 
-  const { error } = validateCustomer(req.body);
-  if (error)
-    return res.status(422).send(error.details.map(e => e.message));
+    user = await User.findOne({ email: req.body.email });
+    if (user)
+      return res
+        .status(409)
+        .send("User already registered with this email account.");
 
-  let user = await User.findOne({ username: req.body.userInfo.username });
-  if (user) return res.status(409).send("Username already exists.");
+    user = new User(_.pick(req.body, ["username", "password", "email"]));
 
-  user = await User.findOne({ email: req.body.userInfo.email });
-  if (user)
+    const salt = await bcrypt.genSalt(10);
+    const password = await bcrypt.hash(user.password, salt);
+    user.password = password;
+    user = await user.save();
+    const token = user.generateAuthToken();
+
+    delete req.body.password;
+    let customer = new Customer(req.body);
+    customer._id = user._id;
+
+    let bodyDetails = new BodyDetails({ _id: customerId });
+    await bodyDetails.save();
+
+
+    customer = await customer.save();
     return res
-      .status(409)
-      .send("User already registered with this email account.");
-
-  user = new User(_.pick(req.body.userInfo, ["username", "password", "email"]));
-  const salt = await bcrypt.genSalt(10);
-  user.password = await bcrypt.hash(user.password, salt);
-  user = await user.save();
-  
-  const token = user.generateAuthToken();
-  
-  let customer = new Customer(req.body);
-  customer.userInfo._id = user._id;
-  
-  customer._id = user._id;
-  customer.userInfo.password = await bcrypt.hash(customer.userInfo.password, salt);
-  customer = await customer.save();
-  
-  return res
-    .header("x-auth-token", token)
-    .status(200)
-    .send(customer);
+      .header("x-auth-token", token)
+      .status(200)
+      .send(customer);
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 exports.getAllCustomers = async (req, res) => {
-  const customers = await Customer.find();
-  return res.status(200).send(customers);
+  try {
+    const customers = await Customer.find();
+    return res.status(200).send(customers);
+  } catch (error) {
+    res.status(404).send(error);
+  }
 };
 
-exports.deleteCustomer = async (req, res) => {
 
-  const customer = await Customer.findById(req.params.customerId).select("-userInfo.password");
+exports.deleteCustomer = async (req, res) => {
+  const customer = await Customer.findById(req.params.customerId).select(
+    "-password"
+  );
   let result = null;
   if (customer) {
     result = await customer.remove();
@@ -63,35 +77,30 @@ exports.deleteCustomer = async (req, res) => {
 };
 
 exports.updateCustomer = async (req, res) => {
-
   const { error } = validateCustomerforUpdate(req.body);
-  if(error)
-    return res.status(400).send(error.details.map(e => e.message))
-
-  if(req.user._id != req.body.userInfo._id || req.user._id !=req.params.customerId)
+  if (error) return res.status(400).send(error.details.map(e => e.message));
+  const customerId = req.params.customerId;
+  if (req.user._id !== customerId)
     return res.status(404).send("Acccess denied");
 
-  // req.body.userInfo.updatedAt = new Date();
-  const customerId = req.body.userInfo._id;
-  delete req.body.userInfo._id;
-  await User.findByIdAndUpdate(customerId,{$set:req.body.userInfo});
+  req.body.updatedAt = new Date();
 
   // req.body.updatedAt = new Date();
-  const result = await Customer.findByIdAndUpdate(req.params.customerId, {
+  const result = await Customer.findByIdAndUpdate(customerId, {
     $set: req.body
-  });
+  }, { useFindAndModify: false });
   return res.status(200).send(result);
 };
 
 exports.getCustomerById = async (req, res) => {
-  const customer = await Customer.findById(req.params.customerId);
+  const customer = await Customer.findById(req.params.customerId).populate("bodyDetails deliveryAddress sellerInfo _id");
   return res.send(customer);
 };
 
 exports.getCustomersByUserName = async (req, res) => {
   let username = req.params.username;
   const customer = await Customer.find({
-    "userInfo.username": username
+    username: username
   });
   return res.send(customer);
 };
@@ -108,7 +117,9 @@ exports.getCustomersByCity = async (req, res) => {
   let city = req.query.city;
   const addresses = await DeliveryAddress.find({
     city
-  }).populate("customerId").select("customerId");
+  })
+    .populate("customerId")
+    .select("customerId");
 
   return res.send(addresses);
 };
@@ -117,35 +128,14 @@ exports.getCustomerByDivision = async (req, res) => {
   let division = req.query.division;
   const addresses = await DeliveryAddress.find({
     division
-  }).populate("customerId").select("customerId");
+  })
+    .populate("customerId")
+    .select("customerId");
   return res.send(addresses);
 };
 
-
-function validateCustomerforUpdate(customer){
-  const schema={
-      _id:Joi.objectId(),
-      userInfo: Joi.object().keys({
-          _id:Joi.objectId().required("customer id not provided"),
-          password: Joi.string().max(1024).min(6).required(),
-          email: Joi.string().email().required()
-      }),
-      fullName: Joi.string().max(50).min(3),
-      lFullName: Joi.string().max(50).min(3),
-
-      religion: Joi.string().max(100).min(3),
-      gender: Joi.string().max(100).min(3),
-      assets: Joi.object().keys({
-          images:Joi.array().items(
-                  Joi.object().keys({
-                  src: Joi.string().max(1000).min(3),
-                  height: Joi.number().min(1),
-                  width: Joi.number().min(1)
-              })
-          ),
-          phone: Joi.string().max(11).min(11),
-      }),
-      active: Joi.boolean(),
-  }
-  return Joi.validate(customer,schema,{abortEarly: false});
-}
+exports.getSelf = async (req, res) => {
+  console.log(req.user);
+  let customer = await Customer.findById(req.user._id);
+  return res.status(200).send(customer);
+};

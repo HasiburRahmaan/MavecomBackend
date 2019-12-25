@@ -1,42 +1,48 @@
-const mongoose = require('mongoose');
-const Joi = require('joi');
-Joi.objectId = require('joi-objectid')(Joi);
+const mongoose = require("mongoose");
+const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 
-const {
-  trackingSchema,
-  delivaryInfoSchema,
-  paymentSchema
-} = require('./schemas');
+const orderedProductSchema = new mongoose.Schema({
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Product"
+  },
+  productVariantId: {
+    type: mongoose.Schema.Types.ObjectId,
+    maxlength: 1000,
+    minlength: 5,
+    required: "ProductVarient is required"
+  },
+  quantity: {
+    type: Number,
+    required: "quantity is required"
+  }
+});
 
 const orderSchema = new mongoose.Schema({
-  invoice: {
-    type: String,
-    maxlength: 10000,
-    minlength: 1,
-    required: 'invoice required'
-  },
-  shipping: {
+  customerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'OrderShipping'
+    ref: "Customer",
+    required: "customer id is required"
   },
-  delivery_notes: {
+  customerName: {
     type: String,
-    maxlength: 1000,
-    minlength: 2
+    maxlength: 200,
+    minlength: 3
   },
-  tracking: {
-    type: trackingSchema,
-    required: 'tracking required'
+  phone: {
+    type: String,
+    maxlength: 20,
+    minlength: 11
   },
   orderedProducts: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'OrderedProduct'
+      type: orderedProductSchema,
+      required: true
     }
   ],
   actualCost: {
-    type: Number,
-    
+    type: Number
   },
   totalDiscount: {
     type: Number
@@ -45,85 +51,56 @@ const orderSchema = new mongoose.Schema({
     type: Number
     // required:"total cost required"
   },
-  delivaryInfo: {
-    type: delivaryInfoSchema,
-    required: 'delivary info required '
+  deliveryInfo: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "DeliveryInfo"
   },
   rating: {
     type: Number
   },
-  created_at: {
+  createdAt: {
     type: Date,
-    default: Date.now
   },
-  updated_at: {
+  updatedAt: {
     type: Date,
-    default: Date.now
   },
   isCanceled: {
-    type: Boolean
+    type: Boolean,
+    default: false
   },
   canceledAt: {
     type: Date
-  },
-  payment: {
-    type: paymentSchema,
-    required: 'payment method is required'
   }
+}, {
+  timestamps: true
 });
 
-const Order = mongoose.model('Order', orderSchema);
+const Order = mongoose.model("Order", orderSchema);
 
 function validateOrder(order) {
   const schema = {
-    invoice: Joi.string()
-      .max(10000)
-      .min(1)
-      .required(),
-    shipping: Joi.objectId().required(),
-    delivery_notes: Joi.string()
-      .max(1000)
-      .min(1),
-    tracking: Joi.object().keys({
-      company: Joi.string()
-        .min(2)
-        .max(100)
-        .required(),
-      tracking_number: Joi.string()
-        .min(2)
-        .max(995)
-        .required(),
-      status: Joi.string()
-        .min(1)
-        .max(50)
-    }),
+    customerId: Joi.objectId().required(),
+    customerName: Joi.string()
+      .min(3)
+      .max(200),
+    phone: Joi.string()
+      .max(20)
+      .min(11),
     orderedProducts: Joi.array()
-      .items(Joi.objectId())
+      .items({
+        productId: Joi.objectId().required(),
+        productVariantId: Joi.objectId().required(),
+        quantity: Joi.number().required()
+      })
       .required(),
     actualCost: Joi.number(),
     totalDiscount: Joi.number(),
     totalCost: Joi.number(),
-    delivaryInfo: Joi.object().keys({
-      stated_at: Joi.date(),
-      isDelivered: Joi.boolean(),
-      isCanceled: Joi.boolean(),
-      ended_at: Joi.date().required()
-    }),
     rating: Joi.number(),
-    created_at: Joi.date(),
-    updated_at: Joi.date(),
+    createdAt: Joi.date(),
+    updatedAt: Joi.date(),
     isCanceled: Joi.boolean(),
-    canceledAt: Joi.date(),
-    payment: Joi.object().keys({
-      method: Joi.string()
-        .min(2)
-        .max(100)
-        .required(),
-      transiction_id: Joi.string()
-        .min(2)
-        .max(900)
-        .required()
-    })
+    canceledAt: Joi.date()
   };
   return Joi.validate(order, schema, {
     abortEarly: false

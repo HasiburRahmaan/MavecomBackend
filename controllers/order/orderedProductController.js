@@ -1,40 +1,61 @@
 const _ = require("lodash");
-const bcrypt = require("bcrypt");
-
+const {ProductVarient} = require('../../models/product/productVarient')
 const{ValidateOrderedProduct,OrderProduct}=require("../../models/order/orderedProduct");
+
+//Functions
+
+// //Ordered product Generaton
+async function orderedProductGenerator(productId, varientId, quantity){
+    var product = await ProductVarient.findOne().where({productId})
+    var varient = product.varients.filter(e=>{
+        return e.id == varientId
+    })
+    varient = varient[0] 
+    // var price = varient.price 
+    // var discountAmount = varient.discountAmount.amount
+    // var discountPercentage = varient.discountPercentage.amount 
+    // var salesPrice  = varient.price-(((varient.discountPercentage.amount * varient.price)/100)+varient.discountAmount.amount)
+    if(varient.quantity >= quantity){
+        varient.quantity = varient.quantity-quantity 
+        await product.save()
+    }else{
+        
+    }
+}
 
 //GET ALL orderedProduct
 exports.getAllOrderedProduct = async (request,response)=>{
     try{
         const orderProduct=await OrderProduct.find();
         return response.status(200).send(orderProduct);
-
     }catch(err){
         response.status(404).send(err);
     }
 }
 //post a orderedProduct
-exports.addOrderedProduct=async(request,response)=>{
-    const{error}=ValidateOrderedProduct(request.body);
+exports.addOrderedProduct=async(req,res)=>{
+    const{error}=ValidateOrderedProduct(req.body);
     if(error) 
-        return response.status(400).send(error.details.map(e=>e.message));
-    const orderProduct=new OrderProduct(request.body);
+        return res.status(400).send(error.details.map(e=>e.message));
+    
+    await orderedProductGenerator(req.body.productId, req.body.productVariantId, req.body.quantity)
+    const orderProduct=new OrderProduct(req.body);
+    
     orderProduct.save();
-    return response.status(200).send(request.body);
+    return res.status(200).send(req.body);
 }
 
 //get a single orderedProduct By id
-exports.getOrderedProductById= async(request,response)=>{
-    try{
-        const orderProduct=await OrderProduct.findById(request.params.productId);
-        return response.send(orderProduct);
-    }catch(err){
-        return response.send(err);
-    }
-}
+exports.getOrderedProductById = async (request, response) => {
+  try {
+    const orderProduct = await OrderProduct.findById(request.params.productId);
+    return response.send(orderProduct);
+  } catch (err) {
+    return response.send(err);
+  }
+};
 
 //GET A SINGLE orderedProduct BY BRANDNAME
-
 exports.getOrderedProductByBrandName=async(request,response)=>{
     let brandName=request.params.brandName;
     try{
@@ -48,7 +69,6 @@ exports.getOrderedProductByBrandName=async(request,response)=>{
 }
 
 //UPDATE orderedProduct BY ID
-
 exports.putOrderedProductById=async(request,response)=>{
     try{
        const orderProduct=await OrderProduct.findByIdAndUpdate(request.params.productId,{
@@ -61,7 +81,6 @@ exports.putOrderedProductById=async(request,response)=>{
 }
 
 //Delete orderedProduct BY ID
-
 exports.deleteOrderedProductById=async(request,response)=>{
     try{
         const orderProduct=await OrderProduct.findById(request.params.productId);
@@ -74,3 +93,8 @@ exports.deleteOrderedProductById=async(request,response)=>{
         response.status(404).send(error);
     }
 }
+
+
+
+
+

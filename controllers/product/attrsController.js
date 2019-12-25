@@ -40,13 +40,12 @@ exports.getAllAttrs = async(req, res)=>{
 exports.getAttrById = async(req, res)=>{
     var id = req.params.id;
     try {
-        var attribute =await findById(id) 
-        console.log(attribute.createdAt)  
+        var attribute =await findById(id)   
         return attribute ? res.send(attribute) : res.send("Atrribute not found")  
         
     } catch (error) {
-        return res.status(404).send(error);
-    } 
+        return res.status(404).send(error); 
+    }  
 }
 
 //Update Attribute

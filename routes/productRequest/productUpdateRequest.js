@@ -15,7 +15,7 @@ const auth = require('../../middleware/auth');
 router.post('/',addProductUpdateRequest);
 router.get('/', [auth, staff], getAllProductUpdateRequest);
 router.get('/productId/:productId', [auth, staff], getProductUpdateRequestById);
-//router.get("/brand/:brandName", getProductUpdateRequestByName);
+router.get("/brand/:brandName", getProductUpdateRequestByName);
 router.put('/update/:productId', [auth, staff], putProductUpdateRequestById);
 router.delete('/delete/:productId', [auth, staff],deleteProductUpdateRequestById);
 

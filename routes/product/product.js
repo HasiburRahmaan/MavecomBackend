@@ -1,38 +1,55 @@
 const express = require("express");
-const {addProduct, getProducts, getProductById,getProductByTopDiscount,getProductByBrandName, getProductByDeptName, updateProduct, deleteProduct} = require('../../controllers/product/productController'); 
-const router = express.Router(); 
+const {
+  addProduct,
+  getProducts,
+  getProductAdditionalInfo,
+  getProductById,
+  getProductByTopDiscount,
+  getProductByBrandName,
+  getProductByDeptName,
+  updateProduct,
+  deleteProduct,
+  getHotDepartmentsProducts
+} = require("../../controllers/product/productController");
+const router = express.Router();
 
 const { staff } = require("../../middleware/authorization");
 const { admin } = require("../../middleware/authorization");
 const auth = require("../../middleware/auth");
 
-
 //Post Product
-router.post('/', addProduct) 
+router.post("/", addProduct);
 
 //Get All Products
-router.get('/', getProducts)
+router.get("/", getProducts);
+
+//Get product additional info.
+router.get("/additional-info/:id", getProductAdditionalInfo);
 
 //Get Product by Id
-router.get('/productid/:id', getProductById)
+router.get("/id/:id", getProductById);
+
+
 
 //Get Product by department name
-router.get('/products/department/:deptname', getProductByDeptName) 
+router.get("/department/:name", getProductByDeptName);
 
 //Get Product by Brand Name
-router.get('/products/brand', getProductByBrandName);
+router.get("/brand/:name", getProductByBrandName);
 
 //Get Product by Top Discount
-router.get('/top-discounts', getProductByTopDiscount);
-
+router.get("/top-discounts", getProductByTopDiscount);
 
 //Put Request
-router.put('/:id',[auth, staff], updateProduct);
+//router.put("/:id", [auth, staff], updateProduct);
 
-
+//Put Request
+router.put("/update/:id", updateProduct);
 
 //Delete Request
-router.delete('/:id',[auth, staff], deleteProduct)
+router.delete("/delete/:id", deleteProduct);
 
+//hot department
+router.get("/hot-departments", getHotDepartmentsProducts);
 
-module.exports = router; 
+module.exports = router;

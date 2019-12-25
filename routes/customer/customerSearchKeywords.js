@@ -7,18 +7,16 @@ const {
     deleteCustomerSearchKeywords,
     updateCustomerSearchKeywords
 } = require("../../controllers/customer/customerSearchKeywordsController")
-const {staff} = require("../../middleware/authorization")
-const {admin} = require("../../middleware/authorization")
+const { staff } = require("../../middleware/authorization")
+const { admin } = require("../../middleware/authorization")
 const auth = require("../../middleware/auth")
 
-router.post("/",addCustomerSearchKeywords );
+router.post("/post", addCustomerSearchKeywords);
 
-router.get("/",getAllCustomerSearchKeywords); //[auth,staff]
+router.get("/", [auth, staff], getAllCustomerSearchKeywords);
 
-router.get('/:id', getSingleCustomerSearchKeywordListById);
+router.delete("/delete/:customerId", [auth, staff], deleteCustomerSearchKeywords);
 
-router.delete("/delete-customer-search-keywords/:customerId",[auth,staff],deleteCustomerSearchKeywords);
-
-router.put("/update-customer-search-keywords/:customerId",[auth,staff],updateCustomerSearchKeywords);
+router.put("/update/:customerId", [auth, staff], updateCustomerSearchKeywords);
 
 module.exports = router;

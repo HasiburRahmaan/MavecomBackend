@@ -5,14 +5,6 @@ const Joi = require("joi");
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    maxlength: 20,
-    minlength: 3,
-    trim: true,
-    required: true,
-    unique: true
-  },
   password: {
     type: String,
     maxlength: 1024,
@@ -44,11 +36,10 @@ const userSchema = new mongoose.Schema({
   updatedAt: Date
 });
 
-userSchema.methods.generateAuthToken = function() {
+userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
     {
       _id: this._id,
-      username: this.username,
       isAdmin: this.isAdmin,
       isStaff: this.isStaff,
       isSuperUser: this.isSuperUser
@@ -67,10 +58,6 @@ const User = mongoose.model("User", userSchema);
 
 function validateUser(user) {
   const schema = {
-    username: Joi.string()
-      .max(20)
-      .min(3)
-      .required(),
     password: Joi.string()
       .max(1024)
       .min(6)

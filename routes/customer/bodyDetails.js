@@ -7,18 +7,15 @@ const {
     deleteBodyDetails,
     updateBodyDetails,
 } = require("../../controllers/customer/bodyDetailsController")
-const {staff} = require("../../middleware/authorization")
-const {admin} = require("../../middleware/authorization")
+const { staff, admin, selfOrStaff } = require("../../middleware/authorization")
 const auth = require("../../middleware/auth")
 
-router.post("/",addBodyDetails );
+router.post("/post", addBodyDetails);
 
-router.get("/",getAllBodyDetails); //[auth,staff],
+router.get("/", [auth, staff], getAllBodyDetails);
 
-router.get("/:id", getBodyDetailsById);
+router.delete("/delete/:customerId", [auth, staff], deleteBodyDetails);
 
-router.delete("/delete-body-details/:customerId",[auth,staff],deleteBodyDetails);
-
-router.put("/update-body-details/:customerId",[auth,staff],updateBodyDetails);
+router.put("/update/:customerId", [auth, selfOrStaff], updateBodyDetails);
 
 module.exports = router;

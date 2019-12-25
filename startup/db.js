@@ -1,10 +1,15 @@
 const mongoose = require("mongoose");
 const winston = require("winston");
 
-module.exports = function() {
+const url = `mongodb+srv://nafiul:Abc13579@cluster0-ir0o6.mongodb.net/test?retryWrites=true&w=majority`;
+const localUrl = `mongodb://localhost:27017/mavecom`
+
+module.exports = function () {
   mongoose
-    // .connect("mongodb://173.82.212.25:27017/mavecom", { useNewUrlParser: true })
-    .connect("mongodb://localhost:27017/mavecom", {useNewUrlParser:true}) 
-    .then(() => winston.info("Connected to MongoDB..."));
-}; 
- 
+    .connect(localUrl, {
+      //.connect("mongodb://3.224.174.209:27017/mavecom", {
+      useNewUrlParser: true
+    })
+    .then(() => console.log("Connected to MongoDB..."))
+    .catch(err => console.log("can not connect,", err));
+};

@@ -17,9 +17,13 @@ exports.addDepartment = async(req, res) =>{
     if(error){
         res.status(400).send(error.details.map(e=>e.message));      
     }
-    var department = new Department(req.body);
-    await department.save();
-    res.status(200).send(department);    
+    try {
+        var department = new Department(req.body);
+         await department.save();
+          res.status(200).send(department); 
+    } catch (error) {
+        res.send(error) 
+    }   
 } 
 
 //Get all Department 

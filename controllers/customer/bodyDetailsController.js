@@ -1,56 +1,71 @@
 const _ = require("lodash");
-const bcrypt = require("bcrypt");
-const {BodyDetails,validationBodyDetails} = require("../../models/customer/bodyDetails");
-const {Customer} = require("../../models/customer/customer")
+const {
+  BodyDetails,
+  validationBodyDetails
+} = require("../../models/customer/bodyDetails");
+const { Customer } = require("../../models/customer/customer");
 
-exports.addBodyDetails = async (req,res)=>{
+exports.addBodyDetails = async (req, res) => {
+  try{
+    const { error } = validationBodyDetails(req.body);
+    if (error) return res.status(422).send(error.details.map(e => e.message));
 
-    const{error}=validationBodyDetails(req.body);
-    if(error)
-        return res.status(422).send(error.details.map(e=>e.message));
+    let bodyDetails = await BodyDetails.findOne({ customerId: req.customerId });
+    if (bodyDetails)
+      return res.status(400).send("Customer already has a body details.");
 
-    const bodyDetails=new BodyDetails(req.body);
-    bodyDetails.save();
+    bodyDetails = new BodyDetails(req.body);
+    await bodyDetails.save();
     return res.status(200).send(bodyDetails);
-}
+  }
+  catch(e){
+    console.log(e)
+  }
+  
+};
 
-exports.getAllBodyDetails = async (req,res)=>{
+exports.getAllBodyDetails = async (req, res) => {
+  const bodyDetailses = await BodyDetails.find();
+  return res.status(200).send(bodyDetailses);
+};
 
-    const bodyDetailses = await BodyDetails.find();
-    return res.status(200).send(bodyDetailses);
-}
+exports.getBodyDetailsById = async (req, res) => {
+  const bodyDetails = await BodyDetails.findOne({ customerId: req.params.id });
 
-exports.getBodyDetailsById = async (req, res)=>{
-    const bodyDetails = await BodyDetails.findById(req.params.id);
+  return bodyDetails
+    ? res.status(200).send(bodyDetails)
+    : res.status(404).send("not found");
+};
 
-    return bodyDetails ? res.status(200).send(bodyDetails) : res.status(404).send("not found") 
-}
+exports.deleteBodyDetails = async (req, res) => {
+  const bodyDetails = await BodyDetails.findById(req.params.customerId);
+  let result = null;
+  if (bodyDetails) {
+    result = await bodyDetails.remove();
+  }
+  return res.send(result);
+};
 
-exports.deleteBodyDetails = async (req,res)=>{
+exports.updateBodyDetails = async (req, res) => {
+  const { error } = validationBodyDetails(req.body);
+  if (error) return res.status(400).send(error.details.map(e => e.message));
 
-    const bodyDetails = await BodyDetails.findById(req.params.customerId);
-    let result = null;
-    if(bodyDetails){
-        result = await bodyDetails.remove();
+  let customerId = req.params.customerId;
+
+  const result = await BodyDetails.findByIdAndUpdate(
+    req.params.customerId, {
+      $set: req.body
     }
-    return res.send(result);
+  );
+  Customer.findOneAndUpdate(
+    { _id: customerId },
+    {
+      $set: {
+        updatedAt: new Date()
+      }
+    },
+    {useFindAndModify:false}
+  );
 
-}
-
-exports.updateBodyDetails = async (req,res)=>{
-
-    const{error}=validationBodyDetails(req.body);
-    if(error)
-        return res.status(422).send(error.details.map(e=>e.message));
-
-    const result = await BodyDetails.findByIdAndUpdate(req.params.customerId,{
-        $set:req.body
-    });
-    Customer.findOneAndUpdate({_id:req.body.customerId},{
-        $set:{
-            updatedAt:new Date()
-        }
-    })
-
-    return res.status(200).send(result);
-}
+  return res.status(200).send(result);
+};

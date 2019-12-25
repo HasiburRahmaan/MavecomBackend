@@ -17,9 +17,13 @@ exports.addProductTag = async(req, res) =>{
     if(error){
         res.status(400).send(error.details.map(e=>e.message));      
     }
-    var productTag = new ProductTag(req.body);
-    await productTag.save();
-    res.status(200).send(productTag);    
+    try {
+        var productTag = new ProductTag(req.body);
+         await productTag.save();
+         res.status(200).send(productTag);
+    } catch (error) {
+        res.send(error) 
+    }    
 } 
 
 //Get all ProductTag 
@@ -41,6 +45,20 @@ exports.getProductTagById = async(req, res)=>{
     } catch (error) {
         return res.status(404).send(error);
     } 
+} 
+
+//GetProductListByTag
+exports.getProductListByTag = async(req, res)=>{
+    var tag = req.query.tag  
+    var productList = await ProductTag.find({tagId:tag}).select('productId -_id')
+    res.send(productList)   
+}
+
+//GetTagListByProduct
+exports.getTagListByProduct = async(req, res)=>{
+    var product = req.query.product;
+    var tagList = await ProductTag.find({productId:product}).select('tagId -_id');
+    res.send(tagList);  
 }
 
 //Update ProductTag

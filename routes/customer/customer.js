@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const {
   addCustomer,
@@ -9,27 +9,35 @@ const {
   updateCustomer,
   getCustomersByName,
   getCustomersByCity,
-  getCustomerByDivision
-} = require('../../controllers/customer/customerController');
-const { staff } = require('../../middleware/authorization');
-const { admin } = require('../../middleware/authorization');
-const auth = require('../../middleware/auth');
+  getCustomerByDivision,
+  getSelf
+} = require("../../controllers/customer/customerController");
+const {
+  staff,
+  admin,
+  self,
+  selfOrStaff
+} = require("../../middleware/authorization");
+const auth = require("../../middleware/auth");
 
-router.post('/', addCustomer);
+router.post("/post", addCustomer);
 
-router.get('/',  getAllCustomers); //[auth, staff],
+// router.get("/", [auth, staff], getAllCustomers);
+router.get("/", getAllCustomers);
 
-router.get('/customer-id/:customerId',[auth, staff],  getCustomerById); 
+router.get("/id/:customerId", getCustomerById); //[auth, selfOrStaff]
 
-router.delete('/delete-customer/:customerId', [auth, staff], deleteCustomer);
+router.get("/self", [auth], getSelf);
 
-router.put('/update-customer/:customerId', [auth], updateCustomer);
+router.delete("/delete/:customerId", [auth, staff], deleteCustomer);
 
-router.get('/username/:username', [auth, staff], getCustomersByUserName);
+router.put("/update/:customerId", [auth, selfOrStaff], updateCustomer);
 
-router.get('/name/:customerName', [auth, staff], getCustomersByName);
+router.get("/username/:username", [auth, staff], getCustomersByUserName);
 
-router.get('/address/city/', [auth, staff], getCustomersByCity);
+router.get("/name/:customerName", [auth, staff], getCustomersByName);
 
-router.get('/address/division/', [auth, staff], getCustomerByDivision);
+router.get("/address/city/", [auth, staff], getCustomersByCity);
+
+router.get("/address/division/", [auth, staff], getCustomerByDivision);
 module.exports = router;

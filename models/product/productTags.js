@@ -14,6 +14,8 @@ const productTagSchema = mongoose.Schema({
     }
 }) 
 
+productTagSchema.index({productId: 1, tagId: 1},{unique: true})  
+
 const ProductTag = mongoose.model("ProductTag", productTagSchema);
 
 function validateProductTag(ProductTag){
@@ -29,13 +31,3 @@ module.exports = {ProductTag, validateProductTag}
 
 
 
-
-
-//Testing purpose
-// ==========================
-
-// var productTagDemo = {
-//     productId:"Product",
-//     tagId:"Tag"
-// } 
-// console.log(validateProductTag(productTagDemo))

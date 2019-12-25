@@ -1,5 +1,5 @@
 const {Brand, validateBrand} = require("../../models/product/brand") 
-
+const {Product} = require("../../models/product/product")
 
 //Function
 async function findById(id){
@@ -9,7 +9,7 @@ async function findById(id){
     }catch(error){
         return error
     }
-} 
+}
 
 //Create Brand
 exports.addBrand = async(req, res) =>{  
@@ -32,7 +32,7 @@ exports.getAllBrand = async(req, res)=>{
         var brands = await Brand.find();
         return res.send(brands);
     } catch (error) {
-        res.status(404).send(error);
+        res.status(404).send(error)
     }
 } 
 
@@ -47,11 +47,28 @@ exports.getBrandById = async(req, res)=>{
     } 
 }
 
+//Get recent product
+exports.getRecentProduct = async(req, res) =>{
+    try {
+        var brandName = req.query.brand.trim()
+        var limit = req.query.limit? parseInt(req.query.limit) : 10
+        console.log(typeof(limit))
+        var products = await Product.find({brandName}).sort("-createdAt").limit(limit)
+        console.log(products) 
+        res.send(products)
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+
+}
+
+
 //Update Brand
 exports.updateBrand = async(req, res)=>{
     const {error} =  validateBrand(req.body);
     if(error){
-        res.status(400).send(error.details.map(e=>e.message));      
+        res.status(400).send(error);      
     }
     var id = req.params.id;
     try {
@@ -61,12 +78,11 @@ exports.updateBrand = async(req, res)=>{
             await brand.save();
             return res.send(brand); 
         }else{
-            return res.status(404).send("Brand not found with this id") 
+            return res.status(404).send("Brand not found") 
         } 
     } catch (error) {
         return res.status(404).send(error);
     } 
-    
 } 
 
 //Delete Brand
@@ -78,9 +94,11 @@ exports.deleteBrand = async (req, res)=>{
             brand.delete();
             return res.send(brand); 
         }else{
-            return res.status(404).send("Brand not found with this id") 
+            return res.status(404).send("Brand not found") 
         } 
     } catch (error) {
         return res.status(404).send(error);
     } 
 }
+
+
